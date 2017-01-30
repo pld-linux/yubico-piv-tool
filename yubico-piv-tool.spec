@@ -1,17 +1,20 @@
-%bcond_without	tests
+#
+# Conditional build:
+%bcond_without	tests		# build without tests
+
 Summary:	Tool for interacting with the PIV applet on a YubiKey NEO
 Name:		yubico-piv-tool
 Version:	1.4.2
 Release:	1
 License:	GPL v3+
 Group:		Applications
-URL:		https://developers.yubico.com/yubico-piv-tool/
 Source0:	https://developers.yubico.com/yubico-piv-tool/Releases/%{name}-%{version}.tar.gz
 # Source0-md5:	b03dc5adef8504f822a7586e65f5b33c
-BuildRequires:	chrpath
+URL:		https://developers.yubico.com/yubico-piv-tool/
 BuildRequires:	openssl-devel
 BuildRequires:	pcsc-lite-devel
 Requires:	pcsc-driver-ccid
+BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
 The Yubico PIV tool is used for interacting with the Privilege and
@@ -30,7 +33,6 @@ The Yubico PIV tool is used for interacting with the Privilege and
 Identification Card (PIV) applet on a YubiKey NEO. This package
 includes development files.
 
-
 %prep
 %setup -q
 
@@ -45,21 +47,17 @@ includes development files.
 
 %install
 rm -rf $RPM_BUILD_ROOT
-
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
-chrpath --delete $RPM_BUILD_ROOT%{_bindir}/yubico-piv-tool
-chrpath --delete $RPM_BUILD_ROOT%{_libdir}/libykcs11.so.*
-
-rm -f $RPM_BUILD_ROOT%{_libdir}/libykpiv.{la,a}
-rm -f $RPM_BUILD_ROOT%{_libdir}/libykcs11.{la,a}
+rm $RPM_BUILD_ROOT%{_libdir}/libykpiv.{la,a}
+rm $RPM_BUILD_ROOT%{_libdir}/libykcs11.{la,a}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post -p /sbin/ldconfig
-%postun -p /sbin/ldconfig
+%post	-p /sbin/ldconfig
+%postun	-p /sbin/ldconfig
 
 %files
 %defattr(644,root,root,755)
