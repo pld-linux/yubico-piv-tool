@@ -4,12 +4,12 @@
 
 Summary:	Tool for interacting with the PIV applet on a YubiKey NEO
 Name:		yubico-piv-tool
-Version:	1.4.2
+Version:	1.4.4
 Release:	1
 License:	GPL v3+
 Group:		Applications
 Source0:	https://developers.yubico.com/yubico-piv-tool/Releases/%{name}-%{version}.tar.gz
-# Source0-md5:	b03dc5adef8504f822a7586e65f5b33c
+# Source0-md5:	bdada97514316bd7d712f8dfc6ee6a5e
 URL:		https://developers.yubico.com/yubico-piv-tool/
 BuildRequires:	openssl-devel
 BuildRequires:	pcsc-lite-devel
