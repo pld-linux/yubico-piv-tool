@@ -7,7 +7,7 @@ Summary:	Tool for interacting with the PIV applet on a YubiKey NEO
 Summary(pl.UTF-8):	Narzędzie do komunikacji z apletem PIV na YubiKey NEO
 Name:		yubico-piv-tool
 Version:	1.5.0
-Release:	2
+Release:	3
 License:	BSD
 Group:		Applications
 Source0:	https://developers.yubico.com/yubico-piv-tool/Releases/%{name}-%{version}.tar.gz
