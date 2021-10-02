@@ -6,14 +6,17 @@
 Summary:	Tool for interacting with the PIV applet on a YubiKey NEO
 Summary(pl.UTF-8):	Narzędzie do komunikacji z apletem PIV na YubiKey NEO
 Name:		yubico-piv-tool
-Version:	1.5.0
-Release:	3
+Version:	2.2.1
+Release:	1
 License:	BSD
 Group:		Applications
 Source0:	https://developers.yubico.com/yubico-piv-tool/Releases/%{name}-%{version}.tar.gz
-# Source0-md5:	bcfec9fa2454ba7f7be6cc80632bd41f
+# Source0-md5:	fdd64e16da13c464cfb0c7999b407cec
+Patch0:		openssl3.patch
+Patch1:		install.patch
 URL:		https://developers.yubico.com/yubico-piv-tool/
 %{?with_tests:BuildRequires:	check-devel >= 0.9.6}
+BuildRequires:	gengetopt
 BuildRequires:	help2man
 BuildRequires:	openssl-devel
 BuildRequires:	pcsc-lite-devel
@@ -88,27 +91,24 @@ pakiet zawiera biblioteki statyczne.
 
 %prep
 %setup -q
+%patch0 -p1
+%patch1 -p1
 
 %build
-%configure \
-	--with-backend="pcsc" \
-	--disable-silent-rules \
-	%{!?with_static_libs:--disable-static}
-
+mkdir -p build
+cd build
+%{cmake} ../ \
+	-DBACKEND="pcsc"
 %{__make}
 
 %if %{with tests}
-# disable valgrind, it catches some issues in bash
-%{__make} check \
-	LOG_COMPILER=
+%{__make} test
 %endif
 
 %install
 rm -rf $RPM_BUILD_ROOT
-%{__make} install \
+%{__make} -C build install \
 	DESTDIR=$RPM_BUILD_ROOT
-
-%{__rm} $RPM_BUILD_ROOT%{_libdir}/lib{ykcs11,ykpiv}.la
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -118,16 +118,16 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc COPYING ChangeLog NEWS README doc/*.adoc
+%doc COPYING NEWS README doc/*.adoc
 %attr(755,root,root) %{_bindir}/yubico-piv-tool
 %{_mandir}/man1/yubico-piv-tool.1*
 
 %files libs
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libykpiv.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libykpiv.so.1
+%attr(755,root,root) %ghost %{_libdir}/libykpiv.so.2
 %attr(755,root,root) %{_libdir}/libykcs11.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libykcs11.so.1
+%attr(755,root,root) %ghost %{_libdir}/libykcs11.so.2
 
 %files devel
 %defattr(644,root,root,755)
