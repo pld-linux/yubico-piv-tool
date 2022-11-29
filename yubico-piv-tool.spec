@@ -98,7 +98,8 @@ pakiet zawiera biblioteki statyczne.
 mkdir -p build
 cd build
 %{cmake} ../ \
-	-DBACKEND="pcsc"
+	-DBACKEND="pcsc" \
+	%{!?with_tests:-DSKIP_TESTS:BOOL=ON}
 %{__make}
 
 %if %{with tests}
