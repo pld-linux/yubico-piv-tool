@@ -15,7 +15,7 @@ Source0:	https://developers.yubico.com/yubico-piv-tool/Releases/%{name}-%{versio
 Patch0:		openssl3.patch
 Patch1:		install.patch
 URL:		https://developers.yubico.com/yubico-piv-tool/
-%{?with_tests:BuildRequires:	check-devel >= 0.9.6}
+BuildRequires:	check-devel >= 0.9.6
 BuildRequires:	gengetopt
 BuildRequires:	help2man
 BuildRequires:	openssl-devel
