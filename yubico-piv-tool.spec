@@ -1,20 +1,21 @@
 #
 # Conditional build:
 %bcond_without	static_libs	# static library
-%bcond_with	tests		# unit tests
+%bcond_without	tests		# unit tests
 
 Summary:	Tool for interacting with the PIV applet on a YubiKey NEO
 Summary(pl.UTF-8):	Narzędzie do komunikacji z apletem PIV na YubiKey NEO
 Name:		yubico-piv-tool
-# toggle tests on upgrade
-Version:	2.3.0
+Version:	2.5.0
 Release:	1
 License:	BSD
 Group:		Applications
 Source0:	https://developers.yubico.com/yubico-piv-tool/Releases/%{name}-%{version}.tar.gz
-# Source0-md5:	b05ccce29454183f7f58dea00ef169e2
+# Source0-md5:	106baecf9860ccb6f052ac9cc2b6ddd9
 URL:		https://developers.yubico.com/yubico-piv-tool/
 BuildRequires:	check-devel >= 0.9.6
+BuildRequires:	cmake >= 3.5
+BuildRequires:	gcc >= 6:4.7
 BuildRequires:	gengetopt
 BuildRequires:	help2man
 BuildRequires:	openssl-devel
@@ -94,7 +95,7 @@ pakiet zawiera biblioteki statyczne.
 %build
 mkdir -p build
 cd build
-%{cmake} ../ \
+%cmake .. \
 	-DBACKEND="pcsc" \
 	%{!?with_tests:-DSKIP_TESTS:BOOL=ON}
 %{__make}
